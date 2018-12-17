@@ -13,7 +13,19 @@ console.log('Hello Noteful!');
 
 // 1st GET request
 app.get('/api/notes', (req, res) => {
-  res.json(data);
+  const query = req.query;
+  const searchTerm = query.searchTerm;
+
+  const filteredData = data.filter(item => {
+    let string = item.title;  
+    return string.includes(searchTerm);
+  });
+
+  if (searchTerm === undefined) {
+    res.json(data);
+  } else {
+    res.json(filteredData);
+  }
 });
 
 // Return specific notes based on ID
