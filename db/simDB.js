@@ -31,7 +31,7 @@ const simDB = {
   filter: function (query = {}, callback) {
     setTimeout(() => {
       try {
-        // let list = term ? this.data.filter(item => item.name.includes(term)) : this.data;
+        // let list = query ? this.data.filter(item => item.content.includes(query)) : this.data;
         let list = this.data.filter(item => Object.keys(query).every(key => item[key] === query[key]));
         callback(null, list);
       } catch (err) {

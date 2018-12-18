@@ -11,7 +11,9 @@ const logging = function(req, res, next) {
   const date = new Date();
   const method = req.method;
   const path = req.path;
-  console.log(date, method, path);
+  const query = req.query;
+  const searchTerm = query.searchTerm;
+  console.log(date, method, path, searchTerm);
   next();
 };
 

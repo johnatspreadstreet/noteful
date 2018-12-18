@@ -5,7 +5,7 @@ const simDB = require('../db/simDB');
 const notes = simDB.initialize(data);
 
 // GET Notes with search
-notes.filter('cats', (err, list) => {
+notes.filter('Posuere', (err, list) => {
   if (err) {
     console.error(err);
   }
