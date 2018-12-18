@@ -2,8 +2,8 @@
 
 function formatDate(d){
   var year = d.getFullYear();
-  var month = addLeadingZero(d.getMonth());
-  var day = addLeadingZero(d.getDay());
+  var month = addLeadingZero(d.getMonth()); // Returns index of month, ie 11 = December
+  var day = addLeadingZero(d.getDay()); // Returns day of the week for date, ie 0 = Monday
   var hours = d.getHours();
   var minutes = d.getMinutes();
   var seconds = d.getSeconds();
