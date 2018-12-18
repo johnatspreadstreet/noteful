@@ -14,6 +14,9 @@ const notes = simDB.initialize(data);
 // Load static files
 app.use(express.static('public'));
 
+// Parse request body
+app.use(express.json());
+
 // Add proper logging functionality
 app.use(function(req, res, next) {
   logging(req, res, next);
@@ -35,12 +38,6 @@ app.get('/api/notes', (req, res, next) => {
 
 // Return specific notes based on ID
 app.get('/api/notes/:id', (req, res, next) => {
-  // const params = req.params;
-  // const id = params.id;
-  
-  // const note = data.find(item => item.id === Number(id));
-
-  // console.log(note);
   const {id} = req.params;
 
   notes.find(id, (err, item) => {
@@ -51,6 +48,31 @@ app.get('/api/notes/:id', (req, res, next) => {
   });
   console.log(id);
   // res.send(note);
+});
+
+app.put('/api/notes/:id', (req, res, next) => {
+  const id = req.params.id;
+
+  /***** Never trust users - validate input *****/
+  const updateObj = {};
+  const updateFields = ['title', 'content'];
+
+  updateFields.forEach(field => {
+    if (field in req.body) {
+      updateObj[field] = req.body[field];
+    }
+  });
+
+  notes.update(id, updateObj, (err, item) => {
+    if (err) {
+      return next(err);
+    }
+    if (item) {
+      res.json(item);
+    } else {
+      next();
+    }
+  });
 });
 
 app.use(function(req, res, next) {
