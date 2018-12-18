@@ -1,19 +1,24 @@
 'use strict';
 
-// const express = require('express');
-// const morgan = require('morgan');
+function formatDate(d){
+  var year = d.getFullYear();
+  var month = addLeadingZero(d.getMonth());
+  var day = addLeadingZero(d.getDay());
+  var hours = d.getHours();
+  var minutes = d.getMinutes();
+  var seconds = d.getSeconds();
+  return year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds;
+}
 
-// const app = express();
-
-// app.use(morgan(':date[web] :method :url'));
+function addLeadingZero(n){ 
+  return n < 10 ? '0'+n : ''+n; 
+}
 
 const logging = function(req, res, next) {
-  const date = new Date();
-  const method = req.method;
-  const path = req.path;
-  const query = req.query;
-  const searchTerm = query.searchTerm;
-  console.log(date, method, path, searchTerm);
+  let date = new Date();
+  let displayDate = formatDate(date);
+  const {method, originalUrl} = req;
+  console.log(displayDate, method, originalUrl);
   next();
 };
 
