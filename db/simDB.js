@@ -28,11 +28,13 @@ const simDB = {
     }, DELAY);
   },
 
-  filter: function (query = {}, callback) {
+  filter: function (query, callback) {
     setTimeout(() => {
       try {
-        // let list = query ? this.data.filter(item => item.content.includes(query)) : this.data;
-        let list = this.data.filter(item => Object.keys(query).every(key => item[key] === query[key]));
+        // let list = query ? this.data.filter(item => item.title.includes(query)) : this.data;
+        // let list = this.data.filter(item => Object.keys(query).every(key => item[key] === query[key]));
+        console.log(query);
+        let list = !query ? this.data : this.data.filter(item => item.title.includes(query));
         callback(null, list);
       } catch (err) {
         callback(err);
