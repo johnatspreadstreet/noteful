@@ -4,6 +4,7 @@ const express = require('express');
 const {PORT} = require('./config');
 const {logging} = require('./middleware/logger');
 const queryString = require('query-string');
+const morgan = require('morgan');
 const app = express();
 
 // Simple In-Memory Database
@@ -18,9 +19,7 @@ app.use(express.static('public'));
 app.use(express.json());
 
 // Add proper logging functionality
-app.use(function(req, res, next) {
-  logging(req, res, next);
-});
+app.use(morgan('dev'));
 
 console.log('Hello Noteful!');
 
