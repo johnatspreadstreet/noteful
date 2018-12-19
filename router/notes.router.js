@@ -93,7 +93,7 @@ notesRouter.delete('/notes/:id', (req, res, next) => {
       return next(err);
     }
     if (item) {
-      res.status(204).json(item);
+      res.status(204).end();
     } else {
       next();
     }
