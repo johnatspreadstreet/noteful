@@ -84,4 +84,20 @@ notesRouter.post('/notes', (req, res, next) => {
   });
 });
 
+notesRouter.delete('/notes/:id', (req, res, next) => {
+  const id = req.params.id;
+  console.log(id);
+
+  notes.delete(id, (err, item) => {
+    if (err) {
+      return next(err);
+    }
+    if (item) {
+      res.status(204).json(item);
+    } else {
+      next();
+    }
+  });
+});
+
 module.exports = notesRouter;
