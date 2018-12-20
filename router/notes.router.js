@@ -13,26 +13,34 @@ const notes = simDB.initialize(data);
 notesRouter.get('/notes', (req, res, next) => {
   const { searchTerm } = req.query;
   
-  notes.filter(searchTerm, (err, list) => {
-    if (err) {
-      return next(err); // goes to error handler
-    }
-    res.json(list); // responds with filtered array
-  });
+  notes.filter(searchTerm)
+    .then(list => res.json(list))
+    .catch(err => {
+      return next(err);
+    });
+  //   , (err, list) => {
+  //   if (err) {
+  //     return next(err); // goes to error handler
+  //   }
+  //   res.json(list); // responds with filtered array
+  // });
 });
   
 // Return specific notes based on ID
 notesRouter.get('/notes/:id', (req, res, next) => {
   const {id} = req.params;
   
-  notes.find(id, (err, item) => {
-    if (err) {
-      return next(err);
-    }
-    res.json(item);
-  });
-  console.log(id);
-  // res.send(note);
+  notes.find(id)
+    .then(item => {
+      if (item) {
+        res.json(item);
+      } else {
+        next();
+      }
+    })
+    .catch(err => {
+      next(err);
+    });
 });
   
 notesRouter.put('/notes/:id', (req, res, next) => {
@@ -48,16 +56,27 @@ notesRouter.put('/notes/:id', (req, res, next) => {
     }
   });
   
-  notes.update(id, updateObj, (err, item) => {
-    if (err) {
-      return next(err);
-    }
-    if (item) {
-      res.json(item);
-    } else {
-      next();
-    }
-  });
+  notes.update(id, updateObj)
+    .then(item => {
+      if (item) {
+        res.json(item);
+      } else {
+        next();
+      }
+    })
+    .catch(err => {
+      next(err);
+    });
+  //   , (err, item) => {
+  //   if (err) {
+  //     return next(err);
+  //   }
+  //   if (item) {
+  //     res.json(item);
+  //   } else {
+  //     next();
+  //   }
+  // });
 });
 
 // Post (insert) an item
@@ -72,32 +91,54 @@ notesRouter.post('/notes', (req, res, next) => {
     return next(err);
   }
 
-  notes.create(newItem, (err, item) => {
-    if (err) {
-      return next(err);
-    }
-    if (item) {
-      res.location(`http://${req.headers.host}/api/notes/${item.id}`).status(201).json(item);
-    } else {
-      next();
-    }
-  });
+  notes.create(newItem)
+    .then(item => {
+      if (item) {
+        res.location(`http://${req.headers.host}/api/notes/${item.id}`).status(201).json(item);
+      } else {
+        next();
+      }
+    })
+    .catch(err => {
+      next(err);
+    });
+  //   , (err, item) => {
+  //   if (err) {
+  //     return next(err);
+  //   }
+  //   if (item) {
+  //     res.location(`http://${req.headers.host}/api/notes/${item.id}`).status(201).json(item);
+  //   } else {
+  //     next();
+  //   }
+  // });
 });
 
 notesRouter.delete('/notes/:id', (req, res, next) => {
   const id = req.params.id;
   console.log(id);
 
-  notes.delete(id, (err, item) => {
-    if (err) {
+  notes.delete(id)
+    .then(item=> { 
+      if (item) {
+        res.status(204).end();
+      } else {
+        next();
+      }
+    })
+    .catch(err => {
       return next(err);
-    }
-    if (item) {
-      res.status(204).end();
-    } else {
-      next();
-    }
-  });
+    });
+  //   , (err, item) => {
+  //   if (err) {
+  //     return next(err);
+  //   }
+  //   if (item) {
+  //     res.status(204).end();
+  //   } else {
+  //     next();
+  //   }
+  // });
 });
 
 module.exports = notesRouter;
