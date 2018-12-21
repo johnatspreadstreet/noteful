@@ -18,12 +18,6 @@ notesRouter.get('/notes', (req, res, next) => {
     .catch(err => {
       return next(err);
     });
-  //   , (err, list) => {
-  //   if (err) {
-  //     return next(err); // goes to error handler
-  //   }
-  //   res.json(list); // responds with filtered array
-  // });
 });
   
 // Return specific notes based on ID

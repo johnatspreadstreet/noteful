@@ -35,8 +35,12 @@ app.use(function (err, req, res, next) {
 });
 
 // INSERT EXPRESS APP CODE HERE...
-app.listen(PORT, function() {
-  console.info(`Server listening on ${this.address().port}`);
-}).on('error', function(err) {
-  console.error(err);
-});
+if (require.main === module) {
+  app.listen(PORT, function() {
+    console.info(`Server listening on ${this.address().port}`);
+  }).on('error', function(err) {
+    console.error(err);
+  });
+}
+
+module.exports = app;
