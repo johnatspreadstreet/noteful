@@ -175,7 +175,11 @@ describe('Notes route', function() {
           .delete(`/api/notes/${id}`)
           .then(function(res) {
             expect(res).to.have.status(204);
-            
+            return chai.request(app)
+              .get(`/api/notes/${id}`)
+              .then(function(res) {
+                expect(res).to.have.status(404);
+              });
           });
       });
   });
